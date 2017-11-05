@@ -149,11 +149,11 @@ subprojects {
       }
 
       pom.project {
-        description 'An API for data management, analytics, and machine learning on parallel computing clusters.'
+        description 'An API for building nested data structures.'
         inceptionYear '2017'
-        url 'http://cascading.org/'
+        url 'http://heretical.io/'
         scm {
-          url 'https://github.com/cwensel/cascading-local.git'
+          url 'https://github.com/Heretical/pointer-path.git'
         }
         licenses {
           license {
@@ -278,7 +278,7 @@ buildLatestMeta.doLast {
     "${rootProject.name}.release.url=${releaseURL}"
   )
 
-  latestJSONPath = new File( destination, 'latest.json' )
+  latestJSONPath = file( destination, 'latest.json' )
   latestJSONPath.write( """\
 {
   "${rootProject.name}": {

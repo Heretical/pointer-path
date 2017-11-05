@@ -1,0 +1,28 @@
+/*
+ * Copyright (c) 2017 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+ext.jacksonDatabindVersion = '2.8.7'
+ext.jacksonDatatypeGuavaVersion = jacksonDatabindVersion
+ext.jacksonDataFormatsVersion = jacksonDatabindVersion
+
+dependencies {
+  compile project( ':pointer-path-core' )
+
+  compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonDatabindVersion
+  compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-properties', version: jacksonDataFormatsVersion
+
+  testCompile project( path: ':pointer-path-core', configuration: 'testArtifacts' )
+}
+
+javadoc {
+  configure( options ) {
+    links << "http://${rootProject.s3UploadDocs.destination}javadoc/pointer-path-core".toString()
+
+//    linksOffline( '../../../cascading-core', "http://${rootProject.s3UploadDocs.destination}javadoc/cascading-core".toString() )
+  }
+}

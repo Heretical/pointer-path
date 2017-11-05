@@ -6,7 +6,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-include 'pointer-path-core'
-include 'pointer-path-json'
+dependencies {
 
-rootProject.name = 'pointer-path'
+}
+
+javadoc {
+  configure( options ) {
+//    links << "http://${rootProject.s3UploadDocs.destination}javadoc/pointer-path-core".toString()
+
+//    linksOffline( '../../../cascading-core', "http://${rootProject.s3UploadDocs.destination}javadoc/cascading-core".toString() )
+  }
+}

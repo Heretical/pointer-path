@@ -6,7 +6,18 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-include 'pointer-path-core'
-include 'pointer-path-json'
+package heretical.pointer.path;
 
-rootProject.name = 'pointer-path'
+/**
+ *
+ */
+public interface NestedPointerCompiler<Node, Result>
+  {
+  Pointer<Node> compile( String path );
+
+  NestedPointer<Node, Result> nested( String path );
+
+  Iterable<Node> iterable( Result node );
+
+  Node node( Object value );
+  }
