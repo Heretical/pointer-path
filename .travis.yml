@@ -1,0 +1,11 @@
+language: java
+
+jdk:
+  - oraclejdk8
+
+env:
+  global:
+    - GRADLE_OPTS="-Dbuild.number=$TRAVIS_BUILD_NUMBER -Dbuild.vcs.number=$TRAVIS_COMMIT -Dpublish.repo.userName=$REPO_USER -Dpublish.repo.password=$REPO_PSWD"
+
+after_success:
+  - gradle uploadArchives
