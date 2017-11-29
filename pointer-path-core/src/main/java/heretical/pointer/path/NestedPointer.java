@@ -79,8 +79,10 @@ public interface NestedPointer<Node, Result> extends Serializable
   Result remove( Node root );
 
   /**
-   * Method copy duplicates the {@code from} node and places it into the location
-   * referenced by this pointer relative to the {@code into} node .
+   * Method copy duplicates the matched tree of values referenced from the {@code from} node and places them into the
+   * {@code into} node. Any path not matched from the {@code from} node will be ignored.
+   * <p>
+   * This method retains the tree structure of the matched elements.
    *
    * @param from of Node
    * @param into of Node
@@ -91,9 +93,10 @@ public interface NestedPointer<Node, Result> extends Serializable
     }
 
   /**
-   * Method copy duplicates the {@code from} node and places it into the location
-   * referenced by this pointer relative to the {@code into} node if the {@code filter}
-   * returns true when given the {@code from} node.
+   * Method copy duplicates the matched tree of values referenced from the {@code from} node and places them into the
+   * {@code into} node. Any path not matched from the {@code from} node or by the {@code filter} will be ignored.
+   * <p>
+   * This method retains the tree structure of the matched elements.
    *
    * @param from   of Node
    * @param into   of Node
