@@ -148,6 +148,11 @@ public class CopySpec<T extends CopySpec> implements Serializable
     this.into = intoPointer;
     }
 
+  protected T self()
+    {
+    return (T) this;
+    }
+
   /**
    * Method from copies the object referenced by {@code fromPointer} into the
    * location declared by the constructor.
@@ -159,7 +164,7 @@ public class CopySpec<T extends CopySpec> implements Serializable
     {
     getFrom( fromPointer );
 
-    return (T) this;
+    return self();
     }
 
   /**
@@ -173,11 +178,11 @@ public class CopySpec<T extends CopySpec> implements Serializable
    * @param predicate   of Predicate
    * @return CopySpec
    */
-  public T from( String fromPointer, Predicate predicate )
+  public T from( String fromPointer, Predicate<?> predicate )
     {
     getFrom( fromPointer, predicate );
 
-    return (T) this;
+    return self();
     }
 
   /**
@@ -198,7 +203,7 @@ public class CopySpec<T extends CopySpec> implements Serializable
     {
     getFrom( fromPointer ).addIncludes( includePointers );
 
-    return (T) this;
+    return self();
     }
 
   /**
@@ -217,11 +222,11 @@ public class CopySpec<T extends CopySpec> implements Serializable
    * @param predicate      of Predicate
    * @return CopySpec
    */
-  public T fromInclude( String fromPointer, String includePointer, Predicate predicate )
+  public T fromInclude( String fromPointer, String includePointer, Predicate<?> predicate )
     {
     getFrom( fromPointer ).addInclude( includePointer, predicate );
 
-    return (T) this;
+    return self();
     }
 
   /**
@@ -241,7 +246,7 @@ public class CopySpec<T extends CopySpec> implements Serializable
     {
     getFrom( ROOT ).addIncludes( includePointers );
 
-    return (T) this;
+    return self();
     }
 
   /**
@@ -263,7 +268,7 @@ public class CopySpec<T extends CopySpec> implements Serializable
     {
     getFrom( ROOT ).addInclude( includePointer, predicate );
 
-    return (T) this;
+    return self();
     }
 
   /**
@@ -284,7 +289,7 @@ public class CopySpec<T extends CopySpec> implements Serializable
     {
     getFrom( fromPointer ).addExcludes( excludePointers );
 
-    return (T) this;
+    return self();
     }
 
   /**
@@ -304,7 +309,7 @@ public class CopySpec<T extends CopySpec> implements Serializable
     {
     getFrom( ROOT ).addExcludes( excludePointers );
 
-    return (T) this;
+    return self();
     }
 
   /**
@@ -322,11 +327,11 @@ public class CopySpec<T extends CopySpec> implements Serializable
    * @param transform    of Transform
    * @return CopySpec
    */
-  public T fromTransform( String fromPointer, String valuePointer, Function transform )
+  public T fromTransform( String fromPointer, String valuePointer, Function<?, ?> transform )
     {
     getFrom( fromPointer ).addTransform( valuePointer, transform );
 
-    return (T) this;
+    return self();
     }
 
   /**
@@ -343,11 +348,11 @@ public class CopySpec<T extends CopySpec> implements Serializable
    * @param transform    of Transform
    * @return CopySpec
    */
-  public T transform( String valuePointer, Function transform )
+  public T transform( String valuePointer, Function<?, ?> transform )
     {
     getFrom( ROOT ).addTransform( valuePointer, transform );
 
-    return (T) this;
+    return self();
     }
 
   void resetTransforms( Map<Comparable, Object> values )

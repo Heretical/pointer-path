@@ -153,6 +153,11 @@ public class BuildSpec<T extends BuildSpec> implements Serializable
     {
     }
 
+  protected T self()
+    {
+    return (T) this;
+    }
+
   /**
    * Constructor BuildSpec creates a new BuildSpec instance that coerces all values, by default,
    * to the given {@code defaultType}.
@@ -209,7 +214,7 @@ public class BuildSpec<T extends BuildSpec> implements Serializable
     {
     this.defaultType = defaultType;
 
-    return (T) this;
+    return self();
     }
 
   protected List<Literal> getLiteralList()
@@ -233,7 +238,7 @@ public class BuildSpec<T extends BuildSpec> implements Serializable
     {
     literalList.add( new Literal( value, intoPointer ) );
 
-    return (T) this;
+    return self();
     }
 
   /**
@@ -248,7 +253,7 @@ public class BuildSpec<T extends BuildSpec> implements Serializable
     {
     putList.add( new Put( Op.put, from, defaultType, intoPointer ) );
 
-    return (T) this;
+    return self();
     }
 
   /**
@@ -264,7 +269,7 @@ public class BuildSpec<T extends BuildSpec> implements Serializable
     {
     putList.add( new Put( Op.put, from, asType, intoPointer ) );
 
-    return (T) this;
+    return self();
     }
 
   /**
@@ -279,7 +284,7 @@ public class BuildSpec<T extends BuildSpec> implements Serializable
     {
     putList.add( new Put( Op.put, from, defaultType, intoPointer ) );
 
-    return (T) this;
+    return self();
     }
 
   /**
@@ -295,7 +300,7 @@ public class BuildSpec<T extends BuildSpec> implements Serializable
     {
     putList.add( new Put( Op.put, from, asType, intoPointer ) );
 
-    return (T) this;
+    return self();
     }
 
   /**
@@ -312,7 +317,7 @@ public class BuildSpec<T extends BuildSpec> implements Serializable
     {
     putList.add( new Put( Op.add, from, defaultType, intoPointer ) );
 
-    return (T) this;
+    return self();
     }
 
   /**
@@ -330,7 +335,7 @@ public class BuildSpec<T extends BuildSpec> implements Serializable
     {
     putList.add( new Put( Op.add, from, asType, intoPointer ) );
 
-    return (T) this;
+    return self();
     }
 
   /**
@@ -347,7 +352,7 @@ public class BuildSpec<T extends BuildSpec> implements Serializable
     {
     putList.add( new Put( Op.add, from, defaultType, intoPointer ) );
 
-    return (T) this;
+    return self();
     }
 
   /**
@@ -365,7 +370,7 @@ public class BuildSpec<T extends BuildSpec> implements Serializable
     {
     putList.add( new Put( Op.add, from, asType, intoPointer ) );
 
-    return (T) this;
+    return self();
     }
 
   @Override
