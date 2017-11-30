@@ -8,6 +8,7 @@
 
 package heretical.pointer.operation;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.function.BiFunction;
 
@@ -16,7 +17,7 @@ import heretical.pointer.path.NestedPointerCompiler;
 /**
  *
  */
-public class Builder<Node, Result>
+public class Builder<Node, Result> implements Serializable
   {
   private final NestedPointerCompiler<Node, Result> nestedPointerCompiler;
   protected BuildSpecDecorator<Node>[] buildSpecs;

@@ -8,6 +8,7 @@
 
 package heretical.pointer.operation;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import heretical.pointer.path.NestedPointerCompiler;
@@ -15,7 +16,7 @@ import heretical.pointer.path.NestedPointerCompiler;
 /**
  *
  */
-public class Copier<Node, Result>
+public class Copier<Node, Result> implements Serializable
   {
   private final NestedPointerCompiler<Node, Result> nestedPointerCompiler;
 

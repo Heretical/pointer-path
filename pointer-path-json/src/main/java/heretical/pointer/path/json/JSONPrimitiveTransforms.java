@@ -16,15 +16,16 @@ import com.fasterxml.jackson.databind.node.FloatNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.LongNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import heretical.pointer.operation.Transform;
 
 /**
  * Interface JSONPrimitiveTransforms provides a set of convenience {@link Function} helpers.
  */
 public interface JSONPrimitiveTransforms
   {
-  Function<JsonNode, JsonNode> TO_STRING = (Function<JsonNode, JsonNode>) node -> node == null || node.isTextual() ? node : TextNode.valueOf( node.asText() );
-  Function<JsonNode, JsonNode> TO_DOUBLE = (Function<JsonNode, JsonNode>) node -> node == null || node.isDouble() ? node : DoubleNode.valueOf( node.asDouble() );
-  Function<JsonNode, JsonNode> TO_FLOAT = (Function<JsonNode, JsonNode>) node -> node == null || node.isFloat() ? node : FloatNode.valueOf( (float) node.asDouble() );
-  Function<JsonNode, JsonNode> TO_LONG = (Function<JsonNode, JsonNode>) node -> node == null || node.isLong() ? node : LongNode.valueOf( node.asLong() );
-  Function<JsonNode, JsonNode> TO_INT = (Function<JsonNode, JsonNode>) node -> node == null || node.isInt() ? node : IntNode.valueOf( node.asInt() );
+  Transform<JsonNode> TO_STRING = (Transform<JsonNode>) node -> node == null || node.isTextual() ? node : TextNode.valueOf( node.asText() );
+  Transform<JsonNode> TO_DOUBLE = (Transform<JsonNode>) node -> node == null || node.isDouble() ? node : DoubleNode.valueOf( node.asDouble() );
+  Transform<JsonNode> TO_FLOAT = (Transform<JsonNode>) node -> node == null || node.isFloat() ? node : FloatNode.valueOf( (float) node.asDouble() );
+  Transform<JsonNode> TO_LONG = (Transform<JsonNode>) node -> node == null || node.isLong() ? node : LongNode.valueOf( node.asLong() );
+  Transform<JsonNode> TO_INT = (Transform<JsonNode>) node -> node == null || node.isInt() ? node : IntNode.valueOf( node.asInt() );
   }

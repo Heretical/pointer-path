@@ -8,13 +8,14 @@
 
 package heretical.pointer.operation;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.function.Function;
 
 /**
  *
  */
-public interface Transform<Node> extends Function<Node, Node>
+public interface Transform<Node> extends Function<Node, Node>, Serializable
   {
   default boolean isResettable()
     {

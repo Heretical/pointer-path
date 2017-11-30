@@ -8,13 +8,14 @@
 
 package heretical.pointer.path;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Map;
 
 /**
  * Interface PointerCompiler is implemented by specific nested type providers.
  */
-public interface PointerCompiler<Node, Result>
+public interface PointerCompiler<Node, Result> extends Serializable
   {
   enum Kind
     {

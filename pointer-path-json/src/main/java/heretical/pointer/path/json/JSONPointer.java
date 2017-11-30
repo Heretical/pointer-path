@@ -26,17 +26,29 @@ import heretical.pointer.path.Pointer;
 public class JSONPointer implements Pointer<JsonNode>
   {
   private static final JsonNodeFactory INSTANCE = JsonNodeFactory.instance;
-  private final JsonPointer pointer;
+
+  private final String path;
+  private transient JsonPointer pointer;
 
   public JSONPointer( String path )
     {
-    this.pointer = JsonPointer.compile( path );
+    this.path = path;
+
+    getPointer(); // verify pointer
+    }
+
+  private JsonPointer getPointer()
+    {
+    if( pointer == null )
+      pointer = JsonPointer.compile( path );
+
+    return pointer;
     }
 
   @Override
   public JsonNode at( JsonNode root )
     {
-    JsonNode at = root.at( this.pointer );
+    JsonNode at = root.at( getPointer() );
 
     if( at == null || at.isMissingNode() )
       return null;
@@ -47,18 +59,18 @@ public class JSONPointer implements Pointer<JsonNode>
   @Override
   public JsonNode objectAt( JsonNode root )
     {
-    if( pointer.matches() )
+    if( getPointer().matches() )
       return root;
 
-    return safeWith( parents( root, this.pointer ), this.pointer.last() );
+    return safeWith( parents( root, getPointer() ), getPointer().last() );
     }
 
   @Override
   public JsonNode remove( JsonNode root )
     {
-    JsonPointer head = this.pointer.head();
+    JsonPointer head = getPointer().head();
     JsonNode parent = !head.matches() ? root.at( head ) : root;
-    JsonPointer last = !this.pointer.last().matches() ? this.pointer.last() : this.pointer;
+    JsonPointer last = !getPointer().last().matches() ? getPointer().last() : getPointer();
 
     if( parent.isObject() )
       return ( (ObjectNode) parent ).remove( last.getMatchingProperty() );
@@ -71,7 +83,7 @@ public class JSONPointer implements Pointer<JsonNode>
   @Override
   public void copy( JsonNode from, JsonNode into, Predicate<JsonNode> filter )
     {
-    JsonPointer currentPointer = this.pointer;
+    JsonPointer currentPointer = getPointer();
     JsonNode value = from.at( currentPointer );
 
     if( value == null || value.isMissingNode() )
@@ -143,13 +155,13 @@ public class JSONPointer implements Pointer<JsonNode>
   @Override
   public void apply( JsonNode root, Function<JsonNode, JsonNode> transform )
     {
-    JsonPointer head = this.pointer.head();
+    JsonPointer head = getPointer().head();
     JsonNode parent = !head.matches() ? root.at( head ) : (ObjectNode) root;
 
     if( parent == null || parent.isMissingNode() )
       throw new IllegalArgumentException( "parent is missing" );
 
-    JsonPointer last = !this.pointer.last().matches() ? this.pointer.last() : this.pointer;
+    JsonPointer last = !getPointer().last().matches() ? getPointer().last() : getPointer();
 
     if( parent.isObject() && parent.has( last.getMatchingProperty() ) )
       setOnObject( (ObjectNode) parent, last, parent.get( last.getMatchingProperty() ), transform );
@@ -162,8 +174,8 @@ public class JSONPointer implements Pointer<JsonNode>
   @Override
   public void set( JsonNode root, JsonNode child, Function<JsonNode, JsonNode> transform )
     {
-    JsonNode parent = parents( root, this.pointer );
-    JsonPointer last = !this.pointer.last().matches() ? this.pointer.last() : this.pointer;
+    JsonNode parent = parents( root, getPointer() );
+    JsonPointer last = !getPointer().last().matches() ? getPointer().last() : getPointer();
 
     update( parent, last, child, transform, true );
     }
@@ -171,8 +183,8 @@ public class JSONPointer implements Pointer<JsonNode>
   @Override
   public void add( JsonNode root, JsonNode child, Function<JsonNode, JsonNode> transform )
     {
-    JsonNode parent = parents( root, this.pointer );
-    JsonPointer last = !this.pointer.last().matches() ? this.pointer.last() : this.pointer;
+    JsonNode parent = parents( root, getPointer() );
+    JsonPointer last = !getPointer().last().matches() ? getPointer().last() : getPointer();
 
     update( parent, last, child, transform, false );
     }
@@ -239,7 +251,7 @@ public class JSONPointer implements Pointer<JsonNode>
       }
 
     if( !container.isArray() )
-      throw new IllegalStateException( "node referenced by pointer is not an array: " + pointer );
+      throw new IllegalStateException( "node referenced by pointer is not an array: " + getPointer() );
 
     addOnArray( (ArrayNode) container, child, Function.identity() );
     }
@@ -271,6 +283,6 @@ public class JSONPointer implements Pointer<JsonNode>
   @Override
   public String toString()
     {
-    return pointer.toString();
+    return getPointer().toString();
     }
   }

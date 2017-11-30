@@ -8,10 +8,12 @@
 
 package heretical.pointer.path;
 
+import java.io.Serializable;
+
 /**
  *
  */
-public interface NestedPointerCompiler<Node, Result>
+public interface NestedPointerCompiler<Node, Result> extends Serializable
   {
   Pointer<Node> compile( String path );
 
