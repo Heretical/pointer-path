@@ -8,14 +8,12 @@
 
 package heretical.pointer.operation;
 
-import java.util.function.Predicate;
-
 import heretical.pointer.path.Pointer;
 
 /**
  *
  */
-public abstract class BasePointerFilter<Node> implements Predicate<Node>
+public abstract class BasePointerFilter<Node> implements Filter<Node>
   {
   Pointer<Node> pointer;
 
