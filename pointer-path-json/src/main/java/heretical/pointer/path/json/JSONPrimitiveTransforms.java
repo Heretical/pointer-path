@@ -22,9 +22,9 @@ import com.fasterxml.jackson.databind.node.TextNode;
  */
 public interface JSONPrimitiveTransforms
   {
-  Function<JsonNode, JsonNode> TO_STRING = (Function<JsonNode, JsonNode>) node -> node == null || node.isTextual() ? node : TextNode.valueOf( node.textValue() );
-  Function<JsonNode, JsonNode> TO_DOUBLE = (Function<JsonNode, JsonNode>) node -> node == null || node.isDouble() ? node : DoubleNode.valueOf( node.doubleValue() );
-  Function<JsonNode, JsonNode> TO_FLOAT = (Function<JsonNode, JsonNode>) node -> node == null || node.isFloat() ? node : FloatNode.valueOf( node.floatValue() );
-  Function<JsonNode, JsonNode> TO_LONG = (Function<JsonNode, JsonNode>) node -> node == null || node.isLong() ? node : LongNode.valueOf( node.longValue() );
-  Function<JsonNode, JsonNode> TO_INT = (Function<JsonNode, JsonNode>) node -> node == null || node.isInt() ? node : IntNode.valueOf( node.intValue() );
+  Function<JsonNode, JsonNode> TO_STRING = (Function<JsonNode, JsonNode>) node -> node == null || node.isTextual() ? node : TextNode.valueOf( node.asText() );
+  Function<JsonNode, JsonNode> TO_DOUBLE = (Function<JsonNode, JsonNode>) node -> node == null || node.isDouble() ? node : DoubleNode.valueOf( node.asDouble() );
+  Function<JsonNode, JsonNode> TO_FLOAT = (Function<JsonNode, JsonNode>) node -> node == null || node.isFloat() ? node : FloatNode.valueOf( (float) node.asDouble() );
+  Function<JsonNode, JsonNode> TO_LONG = (Function<JsonNode, JsonNode>) node -> node == null || node.isLong() ? node : LongNode.valueOf( node.asLong() );
+  Function<JsonNode, JsonNode> TO_INT = (Function<JsonNode, JsonNode>) node -> node == null || node.isInt() ? node : IntNode.valueOf( node.asInt() );
   }
