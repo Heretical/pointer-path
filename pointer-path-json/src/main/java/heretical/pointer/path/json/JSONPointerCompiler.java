@@ -9,8 +9,10 @@
 package heretical.pointer.path.json;
 
 import java.lang.reflect.Type;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.Function;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -19,11 +21,49 @@ import heretical.pointer.path.PointerCompiler;
 
 /**
  * Class JSONPointerCompiler is an implementation of {@link PointerCompiler} for use with JSON objects.
+ * <p>
+ * Note the {@link #node(Object)} method will convert any known Java type to the appropriate JsonNode class.
+ * <p>
+ * Recognized Java types are:
+ * <ul>
+ * <li>String.class</li>
+ * <li>Integer.class</li>
+ * <li>Integer.Type</li>
+ * <li>Long.class</li>
+ * <li>Long.Type</li>
+ * <li>Float.class</li>
+ * <li>Float.Type</li>
+ * <li>Double.class</li>
+ * <li>Double.Type</li>
+ * <li>Boolean.class</li>
+ * <li>Boolean.Type</li>
+ * </ul>
+ * <p>
+ * Any other type will be wrapped in a {@link com.fasterxml.jackson.databind.node.POJONode}.
  *
  * @see PointerCompiler for more details.
  */
 public class JSONPointerCompiler implements PointerCompiler<JsonNode, ArrayNode>
   {
+  static private Map<Type, Function<Object, JsonNode>> convert = new IdentityHashMap<>();
+
+  static
+    {
+    convert.put( String.class, value -> JsonNodeFactory.instance.textNode( (String) value ) );
+
+    // numeric and boolean
+    convert.put( Integer.class, value -> JsonNodeFactory.instance.numberNode( (Integer) value ) );
+    convert.put( Integer.TYPE, value -> JsonNodeFactory.instance.numberNode( (Integer) value ) );
+    convert.put( Long.class, value -> JsonNodeFactory.instance.numberNode( (Long) value ) );
+    convert.put( Long.TYPE, value -> JsonNodeFactory.instance.numberNode( (Long) value ) );
+    convert.put( Float.class, value -> JsonNodeFactory.instance.numberNode( (Float) value ) );
+    convert.put( Float.TYPE, value -> JsonNodeFactory.instance.numberNode( (Float) value ) );
+    convert.put( Double.class, value -> JsonNodeFactory.instance.numberNode( (Double) value ) );
+    convert.put( Double.TYPE, value -> JsonNodeFactory.instance.numberNode( (Double) value ) );
+    convert.put( Boolean.class, value -> JsonNodeFactory.instance.booleanNode( (Boolean) value ) );
+    convert.put( Boolean.TYPE, value -> JsonNodeFactory.instance.booleanNode( (Boolean) value ) );
+    }
+
   @Override
   public JSONPointer compile( String path )
     {
@@ -108,32 +148,6 @@ public class JSONPointerCompiler implements PointerCompiler<JsonNode, ArrayNode>
     if( JsonNode.class.isAssignableFrom( from ) )
       return (JsonNode) value;
 
-    if( from == String.class )
-      return JsonNodeFactory.instance.textNode( (String) value );
-
-    if( from == Integer.class || from == Integer.TYPE )
-      return JsonNodeFactory.instance.numberNode( (Integer) value );
-
-    if( from == Long.class || from == Long.TYPE )
-      return JsonNodeFactory.instance.numberNode( (Long) value );
-
-    if( from == Float.class || from == Float.TYPE )
-      return JsonNodeFactory.instance.numberNode( (Float) value );
-
-    if( from == Double.class || from == Double.TYPE )
-      return JsonNodeFactory.instance.numberNode( (Double) value );
-
-    if( from == Boolean.class || from == Boolean.TYPE )
-      return JsonNodeFactory.instance.booleanNode( (Boolean) value );
-
-    throw new IllegalArgumentException( "unknown type coercion requested from: " + getTypeName( from ) );
-    }
-
-  private static String getTypeName( Type type )
-    {
-    if( type == null )
-      return null;
-
-    return type instanceof Class ? ( (Class) type ).getCanonicalName() : type.toString();
+    return convert.getOrDefault( from, JsonNodeFactory.instance::pojoNode ).apply( value );
     }
   }
