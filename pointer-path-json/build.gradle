@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-ext.jacksonDatabindVersion = '2.8.7'
+ext.jacksonDatabindVersion = '2.9.6'
 ext.jacksonDatatypeGuavaVersion = jacksonDatabindVersion
 ext.jacksonDataFormatsVersion = jacksonDatabindVersion
 
