@@ -25,7 +25,8 @@ Pointer](https://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-03) syntax 
 
 `/people/*/age` will reference the `age` value a level below the `people` array (e.g. `/people/measures/age`).
 
-`/measures/**/value` will reference all the `value` values at any level below the `measures` root.
+`/measures/**/value` will reference all the `value` values at any level below the `measures` root. 
+(e.g. `/measures/value` and `/measures/foo/bar/value`)
 
 ### Pointer
 

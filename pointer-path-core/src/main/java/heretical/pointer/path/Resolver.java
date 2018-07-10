@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
+ * Copyright (c) 2017-2018 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -52,6 +52,16 @@ class Resolver<Node, Result> implements Serializable
     }
 
   boolean isFinal()
+    {
+    return false;
+    }
+
+  boolean isDescent()
+    {
+    return false;
+    }
+
+  boolean isWildCard()
     {
     return false;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
+ * Copyright (c) 2017-2018 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import heretical.pointer.util.PathTree;
+
 /**
  *
  */
@@ -22,6 +24,12 @@ class DescentResolver<Node, Result> extends Resolver<Node, Result>
   public DescentResolver( PointerCompiler<Node, Result> compiler )
     {
     super( compiler );
+    }
+
+  @Override
+  boolean isDescent()
+    {
+    return true;
     }
 
   @Override
@@ -153,38 +161,49 @@ class DescentResolver<Node, Result> extends Resolver<Node, Result>
   @Override
   public void copy( Resolver<Node, Result> previous, Deque<String> queue, Node root, Node from, Pointer<Node> pointer, Node into, Predicate<Node> filter )
     {
+    copyNew( queue, root, from, pointer, into, filter );
+    }
+
+  private void copyNew( Deque<String> queue, Node root, Node from, Pointer<Node> pointer, Node into, Predicate<Node> filter )
+    {
     if( from == null )
       return;
 
-    this.next.copy( this, queue, root, from, pointer, into, filter );
+    if( this.next.isFinal() && filter == null )
+      {
+      this.next.copy( this, queue, root, from, pointer, into, filter );
+      return;
+      }
 
-    recursiveCopy( queue, root, from, into, filter );
+    PathTree pathTree = new PathTree();
+    buildTree( pathTree.root(), from );
+
+    for( String path : pathTree.depthFirstPointers() )
+      {
+      queue.addLast( path );
+
+      Pointer<Node> childPointer = compiler.compile( path );
+      Node child = childPointer.at( from );
+
+      try
+        {
+        this.next.copy( this, queue, root, child, childPointer, into, filter );
+        }
+      finally
+        {
+        queue.removeLast();
+        }
+      }
     }
 
-  private void recursiveCopy( Deque<String> queue, Node root, Node from, Node into, Predicate<Node> filter )
+  private void buildTree( PathTree.Element current, Node from )
     {
     switch( compiler.kind( from ) )
       {
       case Array:
         int i = 0;
         for( Node child : compiler.iterable( from ) )
-          {
-          String path = "/" + i;
-          queue.addLast( path );
-
-          try
-            {
-            this.next.copy( this, queue, root, child, compiler.compile( path ), into, filter );
-
-            i++;
-
-            recursiveCopy( queue, root, child, into, filter );
-            }
-          finally
-            {
-            queue.removeLast();
-            }
-          }
+          buildTree( current.child( i++ ), child );
         break;
 
       case Map:
@@ -196,19 +215,7 @@ class DescentResolver<Node, Result> extends Resolver<Node, Result>
           String key = next.getKey();
           Node child = next.getValue();
 
-          String path = "/" + key;
-          queue.addLast( path );
-
-          try
-            {
-            this.next.copy( this, queue, root, child, compiler.compile( path ), into, filter );
-
-            recursiveCopy( queue, root, child, into, filter );
-            }
-          finally
-            {
-            queue.removeLast();
-            }
+          buildTree( current.child( key ), child );
           }
         break;
 
