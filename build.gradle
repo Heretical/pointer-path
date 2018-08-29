@@ -1,10 +1,21 @@
 /*
- * Copyright (c) 2017 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
+ * Copyright (c) 2017-2018 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "io.spring.gradle:spring-bintray-plugin:0.11.1"
+  }
+}
 
 plugins {
   id "net.ltgt.errorprone" version "0.0.13"
@@ -22,7 +33,6 @@ allprojects {
   repositories {
     mavenLocal()
     mavenCentral()
-    maven {url = 'http://conjars.org/repo/'}
     maven {url = 'https://repository.apache.org'}
   }
 }
@@ -42,10 +52,13 @@ task prepareDist() {
   }
 }
 
+ext.copyright = '<i>Copyright &#169; 2017-2018 Chris K Wensel. All Rights Reserved.</i>'
+
 subprojects {
 
-  apply plugin: 'java'
-  apply plugin: 'maven'
+  apply plugin: "io.spring.bintray"
+  apply plugin: 'java-library'
+  apply plugin: 'maven-publish'
   apply from: '../etc/testing.gradle'
 
   sourceCompatibility = 1.8
@@ -61,11 +74,26 @@ subprojects {
     }
   }
 
+  bintray {
+    bintrayUser = repoUserName
+    bintrayKey = repoPassword
+
+    org = 'heretical'
+    repo = 'wip'
+
+    overrideOnUpload = true
+
+    publication = 'mavenJava'
+
+    licenses = ['MPL-2.0']
+    websiteUrl = 'http://www.heretical.io/projects/pointer-path/'
+    issueTrackerUrl = 'https://github.com/Heretical/pointer-path/issues'
+    vcsUrl = 'https://github.com/Heretical/pointer-path.git'
+  }
+
   javadoc.dependsOn << prepareDist
 
   javadoc {
-    def copyright = '<i>Copyright &#169; 21017 Chris K Wensel. All Rights Reserved.</i>'
-
     title = "Pointer Path ${releaseVersion}"
     destinationDir = file( "${distDir}/javadoc/${project.name}" )
 
@@ -139,43 +167,43 @@ subprojects {
     }
   }
 
-  uploadArchives {
+  publishing {
+    publications {
+      mavenJava( MavenPublication ) {
+        artifact sourcesJar
+        artifact javadocJar
 
-    def deployer = repositories.mavenDeployer {
-      configuration = configurations.archives
+        from components.java
 
-      repository( url: repoUrl ) {
-        authentication( userName: repoUserName, password: repoPassword )
-      }
-
-      pom.project {
-        description 'An API for building nested data structures.'
-        inceptionYear '2017'
-        url 'http://heretical.io/'
-        scm {
-          url 'https://github.com/Heretical/pointer-path.git'
-        }
-        licenses {
-          license {
-            name 'Mozilla Public License, v. 2.0'
-            url 'http://mozilla.org/MPL/2.0/'
-            distribution 'repo'
+        pom {
+          name = 'Pointer-Path'
+          description = 'An API for building nested data structures.'
+          url = 'http://www.heretical.io/'
+          inceptionYear = '2017'
+          licenses {
+            license {
+              name = 'Mozilla Public License, v. 2.0'
+              url = 'http://mozilla.org/MPL/2.0/'
+              distribution = 'repo'
+            }
+          }
+          developers {
+            developer {
+              id = 'cwensel'
+              name = 'Chris K Wensel'
+              email = 'chris@wensel.net'
+            }
+          }
+          scm {
+            url = 'https://github.com/Heretical/pointer-path.git'
           }
         }
       }
-    }
-    // make sure test dependencies come first, so that maven isn't getting
-    // confused, when reading the generated pom
-    [install.repositories.mavenInstaller, deployer]*.pom*.whenConfigured {pom ->
-      def scopeOrder = [test: 1, runtime: 2, provided: 3, compile: 4].withDefault {100}
-      pom.dependencies = pom.dependencies.sort {scopeOrder[ it.scope ]}
     }
   }
 }
 
 task allJavadoc( type: Javadoc, dependsOn: subprojects.javadoc ) {
-
-  def copyright = '<i>Copyright &#169; 2017 Chris K Wensel. All Rights Reserved.</i>'
 
   title = "Cascading ${releaseVersion}"
   destinationDir = file( "${distDir}/javadoc/all/" )
