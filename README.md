@@ -6,10 +6,13 @@ Pointer-Path is a Java API for building and transforming nested data types like 
 
 The API is generic, but currently only supports JSON operations, with the intent to provide POJO and XML providers.
 
-Releases are currently available on Conjars
+Final Releases are available at:
 
-* http://conjars.org/io.heretical/pointer-path-core
-* http://conjars.org/io.heretical/pointer-path-json
+* https://jcenter.bintray.com/
+
+WIP Releases are available at:
+
+* https://dl.bintray.com/heretical/wip/
 
 This library requires Java 8 and the JSON functionality is dependent on [Jackson](https://github.com/FasterXML/jackson).
 

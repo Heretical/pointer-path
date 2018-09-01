@@ -79,7 +79,7 @@ subprojects {
     bintrayKey = repoPassword
 
     org = 'heretical'
-    repo = 'wip'
+    repo =  isFinalRelease ? 'release' : 'wip'
 
     overrideOnUpload = true
 
