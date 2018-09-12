@@ -91,6 +91,9 @@ subprojects {
     vcsUrl = 'https://github.com/Heretical/pointer-path.git'
   }
 
+  task bintrayPublishBuild( dependsOn: [bintrayUpload, bintrayPublish]) {
+  }
+
   javadoc.dependsOn << prepareDist
 
   javadoc {
