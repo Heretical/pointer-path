@@ -57,12 +57,6 @@ public class JSONSetTextTransform implements Transform<JsonNode>
       throw new IllegalArgumentException( "name may not be null or empty" );
     }
 
-  /**
-   * Method apply ...
-   *
-   * @param node of JsonNode
-   * @return JsonNode
-   */
   @Override
   public JsonNode apply( JsonNode node )
     {
@@ -83,11 +77,6 @@ public class JSONSetTextTransform implements Transform<JsonNode>
     return name != null;
     }
 
-  /**
-   * Method reset ...
-   *
-   * @param values of Map<String, Object>
-   */
   @Override
   public void reset( Map<String, Object> values )
     {
@@ -99,11 +88,6 @@ public class JSONSetTextTransform implements Transform<JsonNode>
     return object == null ? null : object.toString();
     }
 
-  /**
-   * Method toString ...
-   *
-   * @return String
-   */
   @Override
   public String toString()
     {

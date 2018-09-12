@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.function.Predicate;
 
 /**
- *
+ * A Filter is used to conditionally allow for a copy operation to apply to a given value.
  */
 public interface Filter<Node> extends Predicate<Node>, Serializable
   {

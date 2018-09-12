@@ -15,10 +15,18 @@ import heretical.pointer.operation.CopySpec;
 import heretical.pointer.path.json.JSONNestedPointerCompiler;
 
 /**
+ * JSONCopier provides the a means to copy values from one JSON object into a another JSON object.
  *
+ * The {@link CopySpec} copy declaration relies on {@link heretical.pointer.path.json.JSONNestedPointer} Strings to
+ * define the copy from and to copy paths.
  */
 public class JSONCopier extends Copier<JsonNode, ArrayNode>
   {
+  /**
+   * Creates a new JSONCopier instance.
+   *
+   * @param copySpecs the copy declaration
+   */
   public JSONCopier( CopySpec... copySpecs )
     {
     super( JSONNestedPointerCompiler.COMPILER, copySpecs );

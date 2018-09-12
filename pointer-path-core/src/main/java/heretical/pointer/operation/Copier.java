@@ -9,18 +9,19 @@
 package heretical.pointer.operation;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Map;
 
 import heretical.pointer.path.NestedPointerCompiler;
 
 /**
- *
+ * Copier is a base class that provides object to object copy functionality declared through a set
+ * of {@link CopySpec} instances.
  */
 public class Copier<Node, Result> implements Serializable
   {
   private final NestedPointerCompiler<Node, Result> nestedPointerCompiler;
-
-  protected CopySpecDecorator<Node>[] copySpecs;
+  private final CopySpecDecorator<Node>[] copySpecs;
 
   public Copier( NestedPointerCompiler<Node, Result> nestedPointerCompiler, CopySpec... copySpecs )
     {
@@ -36,6 +37,19 @@ public class Copier<Node, Result> implements Serializable
       copySpec.verify();
     }
 
+  protected CopySpecDecorator<Node>[] getCopySpecs()
+    {
+    return copySpecs;
+    }
+
+  /**
+   * Method copy first resets all {@link CopySpec} transforms with the Map of {@code arguments}, then applies
+   * all the CopySpec instances to perform a copy and transform.
+   *
+   * @param arguments  a Map of transform arguments, may be null
+   * @param fromNode   the object to copy and possibly transform values from
+   * @param resultNode the object to copy value to
+   */
   public void copy( Map<Comparable, Object> arguments, Node fromNode, Node resultNode )
     {
     resetTransforms( arguments );
@@ -43,6 +57,12 @@ public class Copier<Node, Result> implements Serializable
     copy( fromNode, resultNode );
     }
 
+  /**
+   * Method copy applies all the CopySpec instances to perform a copy and transform.
+   *
+   * @param fromNode   the object to copy and possibly transform values from
+   * @param resultNode the object to copy value to
+   */
   public void copy( Node fromNode, Node resultNode )
     {
     for( CopySpecDecorator<Node> copySpec : copySpecs )
@@ -69,8 +89,16 @@ public class Copier<Node, Result> implements Serializable
       }
     }
 
+  /**
+   * Method resetTransforms resets all {@link CopySpec} transforms.
+   *
+   * @param arguments a Map of transform arguments, may be null
+   */
   public void resetTransforms( Map<Comparable, Object> arguments )
     {
+    if( arguments == null )
+      arguments = Collections.emptyMap();
+
     for( CopySpecDecorator<Node> copySpec : copySpecs )
       copySpec.resetTransforms( arguments );
 

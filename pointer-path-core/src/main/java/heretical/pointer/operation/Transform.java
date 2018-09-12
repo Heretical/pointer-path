@@ -13,7 +13,9 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- *
+ * A Transform is a {@link Function} used to transform a value into a new value during a copy operation.
+ * <p>
+ * Transforms can be reset in order to re-initialize any value before the transform is invoked.
  */
 public interface Transform<Node> extends Function<Node, Node>, Serializable
   {

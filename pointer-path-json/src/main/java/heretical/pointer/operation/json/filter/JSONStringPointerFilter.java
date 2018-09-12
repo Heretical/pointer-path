@@ -69,12 +69,25 @@ public class JSONStringPointerFilter extends JSONBasePointerFilter
     this.ignoreCase = ignoreCase;
     }
 
+  /**
+   * Constructor JSONStringPointerFilter creates a new JSONStringPointerFilter instance.
+   *
+   * @param pointer    of Pointer
+   * @param value      of String
+   */
   public JSONStringPointerFilter( Pointer pointer, String value )
     {
     super( pointer );
     this.value = value;
     }
 
+  /**
+   * Constructor JSONStringPointerFilter creates a new JSONStringPointerFilter instance.
+   *
+   * @param pointer    of Pointer
+   * @param value      of String
+   * @param ignoreCase of boolean
+   */
   public JSONStringPointerFilter( Pointer pointer, String value, boolean ignoreCase )
     {
     super( pointer );

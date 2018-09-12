@@ -15,10 +15,18 @@ import heretical.pointer.operation.Builder;
 import heretical.pointer.path.json.JSONNestedPointerCompiler;
 
 /**
- *
+ * JSONBuilder provides the a means to copy values from a lookup function into a JSON object.
+ * <p>
+ * The {@link BuildSpec} build declaration relies on {@link heretical.pointer.path.json.JSONNestedPointer} Strings to
+ * define the insertion paths.
  */
 public class JSONBuilder extends Builder<JsonNode, ArrayNode>
   {
+  /**
+   * Creates a new JSONBuilder instance.
+   *
+   * @param buildSpecs the build declaration
+   */
   public JSONBuilder( BuildSpec... buildSpecs )
     {
     super( JSONNestedPointerCompiler.COMPILER, buildSpecs );

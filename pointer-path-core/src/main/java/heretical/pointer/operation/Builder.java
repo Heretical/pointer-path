@@ -15,12 +15,14 @@ import java.util.function.BiFunction;
 import heretical.pointer.path.NestedPointerCompiler;
 
 /**
- *
+ * Builder is the base class for type specific nested builder implementations.
+ * <p>
+ * The Builder uses {@link BuildSpec} declarations to build new nested objects.
  */
 public class Builder<Node, Result> implements Serializable
   {
   private final NestedPointerCompiler<Node, Result> nestedPointerCompiler;
-  protected BuildSpecDecorator<Node>[] buildSpecs;
+  private final BuildSpecDecorator<Node>[] buildSpecs;
 
   public Builder( NestedPointerCompiler<Node, Result> nestedPointerCompiler, BuildSpec... buildSpecs )
     {
@@ -36,6 +38,18 @@ public class Builder<Node, Result> implements Serializable
       copySpec.verify();
     }
 
+  protected BuildSpecDecorator<Node>[] getBuildSpecs()
+    {
+    return buildSpecs;
+    }
+
+  /**
+   * Method build first insert literal into the target {@code resultNode}, then inserts values
+   * from the {@code valuesLookup} function into the {@code resultNode}.
+   *
+   * @param valuesLookup a {@link BiFunction} used to lookup values from the source object
+   * @param resultNode the object to insert values into
+   */
   public void build( BiFunction<Comparable, Type, Object> valuesLookup, Node resultNode )
     {
     buildLiterals( resultNode );
@@ -43,6 +57,12 @@ public class Builder<Node, Result> implements Serializable
     buildNodes( valuesLookup, resultNode );
     }
 
+  /**
+   * Method buildLiterals inserts literal values declared by the given {@link BuildSpec} instances into
+   * the target {@code resultNode}.
+   *
+   * @param resultNode the object to insert values into
+   */
   public void buildLiterals( Node resultNode )
     {
     for( BuildSpecDecorator<Node> buildSpec : buildSpecs )
@@ -61,6 +81,12 @@ public class Builder<Node, Result> implements Serializable
       }
     }
 
+  /**
+   * Method buildNodes inserts values from the {@code valuesLookup} function into the {@code resultNode}.
+   *
+   * @param valuesLookup a {@link BiFunction} used to lookup values from the source object
+   * @param resultNode the object to insert values into
+   */
   public void buildNodes( BiFunction<Comparable, Type, Object> valuesLookup, Node resultNode )
     {
     for( BuildSpecDecorator<Node> buildSpec : buildSpecs )
@@ -88,5 +114,4 @@ public class Builder<Node, Result> implements Serializable
         }
       }
     }
-
   }

@@ -39,14 +39,7 @@ import java.util.List;
  * new BuildSpec( "/person" ).putInto( "firstName", "/firstName" );
  * }
  * <p>
- * Note that a field being copied or put into the new object can also be a nested object. In the case of JSON
- * if the object to be copied is a JSON String, the value can be converted to a JSON object on the copy.
- * <p>
- * {@code
- * new BuildSpec().putInto( "person", JSONCoercibleType.TYPE, "/person" );
- * }
- * <p>
- * This example assumes the {@code person} field is a valid JSON String or already a JSON {@code JsonNode} instance.
+ * Note that a field being copied or put into the new object can also be a nested object.
  *
  * @see CopySpec
  */
