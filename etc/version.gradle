@@ -8,7 +8,8 @@
 
 apply from: './etc/properties.gradle'
 
-project.ext.currentCommit = System.properties[ 'build.vcs.number' ];
+ext.currentCommit = System.properties[ 'build.vcs.number' ]
+ext.currentBranch = System.properties[ 'build.vcs.branch' ]
 
 if( !currentCommit )
   {
@@ -31,7 +32,7 @@ ext.minorVersion = versionProperties[ "${rootProject.name}.release.minor" ]
 
 ext.buildNumber = System.getProperty( 'build.number', 'dev' ) // local dev or build server build
 
-ext.isFinalRelease = System.properties[ "${rootProject.name}.release.final" ]
+ext.isFinalRelease = Boolean.getBoolean( "${rootProject.name}.release.final" ) || currentBranch != null ? !currentBranch.contains('wip-') : false
 
 if( System.properties[ "${rootProject.name}.release.private" ] )
   buildNumber = "priv-${buildNumber}"

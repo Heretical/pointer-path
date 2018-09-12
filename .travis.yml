@@ -1,3 +1,8 @@
+branches:
+  only:
+    - /^wip-[0-9]+\.[0-9]+$/
+    - /[0-9]+\.[0-9]+$/
+
 language: java
 
 jdk:
@@ -5,7 +10,7 @@ jdk:
 
 env:
   global:
-    - GRADLE_OPTS="-Dbuild.number=$TRAVIS_BUILD_NUMBER -Dbuild.vcs.number=$TRAVIS_COMMIT -Dpublish.repo.userName=$REPO_USER -Dpublish.repo.password=$REPO_PSWD"
+    - GRADLE_OPTS="-Dbuild.number=$TRAVIS_BUILD_NUMBER -Dbuild.vcs.number=$TRAVIS_COMMIT -Dbuild.vcs.branch=$TRAVIS_BRANCH -Dpublish.repo.userName=$REPO_USER -Dpublish.repo.password=$REPO_PSWD"
 
 after_success:
   - ./gradlew bintrayPublishBuild
