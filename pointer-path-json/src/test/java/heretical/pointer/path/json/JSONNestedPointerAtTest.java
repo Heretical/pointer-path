@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
+ * Copyright (c) 2017-2019 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -224,5 +224,45 @@ public class JSONNestedPointerAtTest
     assertNotNull( result );
     assertEquals( JsonNodeType.OBJECT, result.getNodeType() );
     assertEquals( JsonNodeType.ARRAY, from.at( "/person/array" ).getNodeType() );
+    }
+
+  @Test
+  public void testArrayAt() throws Exception
+    {
+    JsonNode from = mapper.readTree( JSONData.nestedArray );
+
+    JsonNode result = COMPILER.nested( "/0/annotations/1/name" ).at( from );
+
+    assertNotNull( result );
+    assertEquals( JsonNodeType.STRING, result.getNodeType() );
+    assertEquals( "end", result.asText() );
+    }
+
+  @Test
+  public void testArrayWildAt() throws Exception
+    {
+    JsonNode from = mapper.readTree( JSONData.nestedArray );
+
+    JsonNode result = COMPILER.nested( "/0/annotations/*/name" ).allAt( from );
+
+    assertNotNull( result );
+    assertEquals( JsonNodeType.ARRAY, result.getNodeType() );
+    assertEquals( 2, result.size() );
+    assertEquals( "begin", result.get( 0 ).asText() );
+    assertEquals( "end", result.get( 1 ).asText() );
+    }
+
+  @Test
+  public void testArrayDescentAt() throws Exception
+    {
+    JsonNode from = mapper.readTree( JSONData.nestedArray );
+
+    JsonNode result = COMPILER.nested( "/0/annotations/**/name" ).allAt( from );
+
+    assertNotNull( result );
+    assertEquals( JsonNodeType.ARRAY, result.getNodeType() );
+    assertEquals( 2, result.size() );
+    assertEquals( "begin", result.get( 0 ).asText() );
+    assertEquals( "end", result.get( 1 ).asText() );
     }
   }
