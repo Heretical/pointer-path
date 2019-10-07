@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
+ * Copyright (c) 2017-2019 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -78,7 +78,7 @@ public interface PointerCompiler<Node, Result> extends Serializable
    * Method entries returns all the {@link Map.Entry} values in the given Map node.
    *
    * @param node of Node
-   * @return Iterator<Entry<String, Node>>
+   * @return Iterator<Entry < String, Node>>
    */
   Iterator<Map.Entry<String, Node>> entries( Node node );
 
@@ -89,6 +89,14 @@ public interface PointerCompiler<Node, Result> extends Serializable
    * @return Iterable<Node>
    */
   Iterable<Node> iterable( Node node );
+
+  /**
+   * Method size returns the number of child elements in the given node.
+   *
+   * @param node of Node
+   * @return number of children in the node
+   */
+  int size( Node node );
 
   /**
    * Method resultNode creates a new 'result' node.

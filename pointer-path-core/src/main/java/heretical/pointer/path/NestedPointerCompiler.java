@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
+ * Copyright (c) 2017-2019 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -20,6 +20,8 @@ public interface NestedPointerCompiler<Node, Result> extends Serializable
   NestedPointer<Node, Result> nested( String path );
 
   Iterable<Node> iterable( Result node );
+
+  int size( Result node );
 
   Node node( Object value );
   }

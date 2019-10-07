@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
+ * Copyright (c) 2017-2019 Chris K Wensel <chris@wensel.net>. All Rights Reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -41,6 +41,12 @@ public class JSONNestedPointerCompiler implements NestedPointerCompiler<JsonNode
   public Iterable<JsonNode> iterable( ArrayNode node )
     {
     return compiler.iterable( node );
+    }
+
+  @Override
+  public int size( ArrayNode node )
+    {
+    return node.size();
     }
 
   @Override
