@@ -11,22 +11,22 @@ Final Releases are available on jcenter:
 * https://jcenter.bintray.com/
 
 ```gradle
-compile 'io.heretical:pointer-path-core:1.0.0'
-compile 'io.heretical:pointer-path-json:1.0.0'
+compile 'io.heretical:pointer-path-core:1.0.1'
+compile 'io.heretical:pointer-path-json:1.0.1'
 ```
 
 ```xml
 <dependency>
   <groupId>io.heretical</groupId>
   <artifactId>pointer-path-core</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <type>pom</type>
 </dependency>
 
 <dependency>
   <groupId>io.heretical</groupId>
   <artifactId>pointer-path-json</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <type>pom</type>
 </dependency>
 ```
