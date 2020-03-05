@@ -96,6 +96,9 @@ public class BaseNestedPointer<Node, Result> implements NestedPointer<Node, Resu
   @Override
   public Node at( Node root )
     {
+    if( root == null )
+      return null;
+
     if( isAbsolute() )
       return absoluteAt( root );
 

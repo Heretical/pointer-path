@@ -14,8 +14,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeType;
 import org.junit.Test;
 
 import static heretical.pointer.path.json.JSONNestedPointerCompiler.COMPILER;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -34,6 +33,23 @@ public class JSONNestedPointerAtTest
     assertNotNull( result );
     assertEquals( JsonNodeType.NUMBER, result.getNodeType() );
     assertEquals( 100, result.intValue() );
+    }
+
+  @Test
+  public void testGetChildNull() throws Exception
+    {
+    JsonNode result = COMPILER.nested( "/person/measure/value" ).at( null );
+
+    assertNull( result );
+    }
+
+  @Test
+  public void testGetChildAllAtNull() throws Exception
+    {
+    JsonNode result = COMPILER.nested( "/person/measure/value" ).allAt( null );
+
+    assertNotNull( result );
+    assertEquals( JsonNodeType.ARRAY, result.getNodeType() );
     }
 
   @Test

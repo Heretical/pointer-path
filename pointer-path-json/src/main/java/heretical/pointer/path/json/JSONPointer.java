@@ -48,6 +48,9 @@ public class JSONPointer implements Pointer<JsonNode>
   @Override
   public JsonNode at( JsonNode root )
     {
+    if( root == null )
+      return null;
+
     JsonNode at = root.at( getPointer() );
 
     if( at == null || at.isMissingNode() )
@@ -59,6 +62,9 @@ public class JSONPointer implements Pointer<JsonNode>
   @Override
   public JsonNode objectAt( JsonNode root )
     {
+    if( root == null )
+      return null;
+
     if( getPointer().matches() )
       return root;
 
