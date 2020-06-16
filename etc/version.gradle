@@ -32,7 +32,7 @@ ext.minorVersion = versionProperties[ "${rootProject.name}.release.minor" ]
 
 ext.buildNumber = System.getProperty( 'build.number', 'dev' ) // local dev or build server build
 
-ext.isFinalRelease = Boolean.getBoolean( "${rootProject.name}.release.final" ) || currentBranch != null ? !currentBranch.contains('wip-') : false
+ext.isFinalRelease = Boolean.getBoolean( "${rootProject.name}.release.final".toString() ) || currentBranch != null ? !currentBranch.contains('wip-') : false
 
 if( System.properties[ "${rootProject.name}.release.private" ] )
   buildNumber = "priv-${buildNumber}"
