@@ -6,15 +6,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-buildscript {
-  repositories {
-    maven {
-      url "https://plugins.gradle.org/m2/"
-    }
-  }
-  dependencies {
-    classpath "io.spring.gradle:spring-bintray-plugin:0.11.1"
-  }
+plugins {
+  id 'io.github.gradle-nexus.publish-plugin' version '1.0.0'
 }
 
 plugins {
@@ -31,7 +24,6 @@ allprojects {
   apply plugin: 'eclipse'
 
   repositories {
-    mavenLocal()
     mavenCentral()
     maven {url = 'https://repository.apache.org'}
   }
@@ -56,9 +48,9 @@ ext.copyright = '<i>Copyright &#169; 2017-2018 Chris K Wensel. All Rights Reserv
 
 subprojects {
 
-  apply plugin: "io.spring.bintray"
   apply plugin: 'java-library'
   apply plugin: 'maven-publish'
+  apply plugin: 'signing'
   apply from: '../etc/testing.gradle'
 
   sourceCompatibility = 1.8
@@ -72,26 +64,6 @@ subprojects {
     testArtifacts {
       extendsFrom testRuntime
     }
-  }
-
-  bintray {
-    bintrayUser = repoUserName
-    bintrayKey = repoPassword
-
-    org = 'heretical'
-    repo =  isFinalRelease ? 'release' : 'wip'
-
-    overrideOnUpload = true
-
-    publication = 'mavenJava'
-
-    licenses = ['MPL-2.0']
-    websiteUrl = 'http://www.heretical.io/projects/pointer-path/'
-    issueTrackerUrl = 'https://github.com/Heretical/pointer-path/issues'
-    vcsUrl = 'https://github.com/Heretical/pointer-path.git'
-  }
-
-  task bintrayPublishBuild( dependsOn: [bintrayUpload, bintrayPublish]) {
   }
 
   javadoc.dependsOn << prepareDist
@@ -170,9 +142,21 @@ subprojects {
     }
   }
 
+  // publish wips via publishAllPublicationsToGitHubPackagesRepository
   publishing {
+    repositories {
+      maven {
+        name = "GitHubPackages"
+        url = uri( "https://maven.pkg.github.com/heretical/pointer-path" )
+        credentials {
+          username = repoUserName ?: System.getenv( "GPR_USERNAME" )
+          password = repoPassword ?: System.getenv( "GPR_TOKEN" )
+        }
+      }
+    }
+
     publications {
-      mavenJava( MavenPublication ) {
+      maven( MavenPublication ) {
         artifact sourcesJar
         artifact javadocJar
 
@@ -204,11 +188,16 @@ subprojects {
       }
     }
   }
+
+  signing {
+    useGpgCmd()
+    sign publishing.publications.maven
+  }
 }
 
 task allJavadoc( type: Javadoc, dependsOn: subprojects.javadoc ) {
 
-  title = "Cascading ${releaseVersion}"
+  title = "Heretical Pointer-Path ${releaseVersion}"
   destinationDir = file( "${distDir}/javadoc/all/" )
 
   source subprojects.javadoc.source
@@ -224,6 +213,19 @@ task allJavadoc( type: Javadoc, dependsOn: subprojects.javadoc ) {
       'http://docs.oracle.com/javase/7/docs/api/',
       'http://junit.sourceforge.net/javadoc/'
     ]
+  }
+}
+
+// publish releases via publishToSonatype closeAndReleaseSonatypeStagingRepository
+nexusPublishing {
+  repositories {
+    sonatype {
+      nexusUrl.set( uri( "https://s01.oss.sonatype.org/service/local/" ) )
+      snapshotRepositoryUrl.set( uri( "https://s01.oss.sonatype.org/content/repositories/snapshots/" ) )
+
+      username = repoUserName ?: System.getenv( "MCR_USERNAME" )
+      password = repoPassword ?: System.getenv( "MCR_PASSWORD" )
+    }
   }
 }
 
@@ -252,6 +254,7 @@ task clean {
     delete buildDir
   }
 }
+
 task buildDist( dependsOn: prepareRelease ) {
   doLast {
     copy {

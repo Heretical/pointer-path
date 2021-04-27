@@ -6,35 +6,32 @@ Pointer-Path is a Java API for building and transforming nested data types like 
 
 The API is generic, but currently only supports JSON operations, with the intent to provide POJO and XML providers.
 
-Final Releases are available on jcenter:
-
-* https://jcenter.bintray.com/
+Final Releases are available on Maven Central (currently unreleased):
 
 ```gradle
-compile 'io.heretical:pointer-path-core:1.0.2'
-compile 'io.heretical:pointer-path-json:1.0.2'
+compile 'io.heretical:pointer-path-core:1.1.0'
+compile 'io.heretical:pointer-path-json:1.1.0'
 ```
 
 ```xml
 <dependency>
   <groupId>io.heretical</groupId>
   <artifactId>pointer-path-core</artifactId>
-  <version>1.0.2</version>
+  <version>1.1.0</version>
   <type>pom</type>
 </dependency>
 
 <dependency>
   <groupId>io.heretical</groupId>
   <artifactId>pointer-path-json</artifactId>
-  <version>1.0.2</version>
+  <version>1.1.0</version>
   <type>pom</type>
 </dependency>
 ```
 
 WIP release maven coordinates can be found at:
 
-* https://bintray.com/heretical/wip/pointer-path-core
-* https://bintray.com/heretical/wip/pointer-path-json
+* https://github.com/orgs/Heretical/packages?repo_name=pointer-path
 
 This library requires Java 8 and the JSON functionality is dependent on [Jackson](https://github.com/FasterXML/jackson).
 
