@@ -6,7 +6,7 @@ Pointer-Path is a Java API for building and transforming nested data types like 
 
 The API is generic, but currently only supports JSON operations, with the intent to provide POJO and XML providers.
 
-Final Releases are available on Maven Central (currently unreleased):
+Final Releases are available on Maven Central:
 
 ```gradle
 compile 'io.heretical:pointer-path-core:1.1.0'

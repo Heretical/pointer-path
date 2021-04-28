@@ -45,4 +45,4 @@ jobs:
         GRADLE_OPTS: -Dbuild.number=${{ github.run_number }} -Dbuild.vcs.number=${{ github.sha }} -Dbuild.vcs.branch=${{ github.ref }}
         MCR_USERNAME: ${{ secrets.MCR_USERNAME }}
         MCR_PASSWORD: ${{ secrets.MCR_PASSWORD }}
-      run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository -Psigning.gnupg.keyName=${{ secrets.GPG_SECRET_KEY_ID }} -Psigning.gnupg.passphrase=${{ secrets.GPG_SECRET_KEY_PASSWORD }}
+      run: ./gradlew publishToSonatype closeSonatypeStagingRepository -Psigning.gnupg.keyName=${{ secrets.GPG_SECRET_KEY_ID }} -Psigning.gnupg.passphrase=${{ secrets.GPG_SECRET_KEY_PASSWORD }}
